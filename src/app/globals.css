@@ -18,98 +18,57 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* AppPreview: animowana wizualizacja koncepcyjna działania panelu SayWut. */
+/* AppPreview: bohater SayWut ze sprite'ów w public/saywut. Ruch tylko w osi Y,
+   żeby podmiana pozy nigdy nie przesunęła postaci na boki. Czasy animacji są
+   zgrane z sekwencjami klatek w AppPreview.tsx (JUMP_MS, SPIN_MS). */
 
-@keyframes preview-selecting {
-  0%,
-  4% {
-    opacity: 0;
-    transform: scale(0.94);
-  }
-  10%,
-  16% {
-    opacity: 1;
-    transform: scale(1);
-  }
-  20%,
-  100% {
-    opacity: 0;
-    transform: scale(1);
+.sw-jump {
+  animation: sw-jump 600ms ease-in-out;
+}
+
+.sw-spin {
+  animation: sw-spin 420ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sw-jump,
+  .sw-spin {
+    animation: none !important;
   }
 }
 
-@keyframes preview-captured {
-  0%,
-  14% {
-    opacity: 0;
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0.5);
+@keyframes sw-jump {
+  0% {
+    transform: translateY(0) scaleY(1);
   }
   18% {
-    opacity: 1;
-    box-shadow: 0 0 0 8px rgba(56, 189, 248, 0.25);
+    transform: translateY(6px) scaleY(0.92);
   }
-  26%,
-  62% {
-    opacity: 1;
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+  50% {
+    transform: translateY(-26px) scaleY(1.05);
   }
-  70%,
+  82% {
+    transform: translateY(4px) scaleY(0.96);
+  }
   100% {
-    opacity: 0;
-    box-shadow: 0 0 0 0 rgba(56, 189, 248, 0);
+    transform: translateY(0) scaleY(1);
   }
 }
 
-@keyframes preview-scan {
-  0%,
-  16% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.6);
+@keyframes sw-spin {
+  0% {
+    transform: translateY(0) scaleY(1);
   }
-  20%,
-  38% {
-    opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+  18% {
+    transform: translateY(8px) scaleY(0.9);
   }
-  44%,
+  48% {
+    transform: translateY(-30px) scaleY(1.06);
+  }
+  78% {
+    transform: translateY(-8px) scaleY(0.97);
+  }
   100% {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0.6);
-  }
-}
-
-@keyframes preview-loader {
-  0%,
-  34% {
-    opacity: 0;
-    transform: translate(-50%, -50%);
-  }
-  38%,
-  56% {
-    opacity: 1;
-    transform: translate(-50%, -50%);
-  }
-  62%,
-  100% {
-    opacity: 0;
-    transform: translate(-50%, -50%);
-  }
-}
-
-@keyframes preview-panel {
-  0%,
-  42% {
-    opacity: 0;
-    transform: translateY(10px);
-  }
-  50%,
-  84% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  92%,
-  100% {
-    opacity: 0;
-    transform: translateY(6px);
+    transform: translateY(0) scaleY(1);
   }
 }
