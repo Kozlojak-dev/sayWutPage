@@ -1,0 +1,200 @@
+/* Wariant B — „macOS System Settings”.
+
+   Cały wariant żyje pod .vb-root, więc paleta jest zdefiniowana jako custom
+   properties na wrapperze trasy, a nie w @theme. Reszta arkusza to wyłącznie
+   rzeczy, których nie da się zapisać jako klasa Tailwinda: krzywe animacji,
+   vibrancy i cienie okien.
+
+   Tailwind NIE jest tu importowany — robi to już src/app/globals.css. */
+
+.vb-root {
+  /* Powierzchnie, od najgłębszej do najbliższej. „Desktop” to biurko pod
+     oknem, „window” to korpus okna Ustawień, „panel” to biała grupa wierszy
+     w prawym panelu. Trzy poziomy jasności zamiast jednej bieli. */
+  --vb-desktop: #e4e4e9;
+  --vb-window: #f1f1f3;
+  --vb-sidebar: rgba(247, 247, 249, 0.72);
+  --vb-panel: #ffffff;
+  --vb-panel-sunken: #f4f4f6;
+  --vb-titlebar: rgba(238, 238, 241, 0.78);
+
+  /* Hairline'y: separator wewnątrz grupy i mocniejsza krawędź okna. */
+  --vb-line: rgba(0, 0, 0, 0.085);
+  --vb-line-strong: rgba(0, 0, 0, 0.14);
+
+  /* Etykiety. --vb-ink-3 tylko dla 12–13 px tekstu pomocniczego; na białym
+     tle daje ~5:1, na --vb-window ~4,7:1, więc wciąż AA. */
+  --vb-ink: #1c1c1e;
+  --vb-ink-2: #55555c;
+  --vb-ink-3: #6a6a72;
+
+  /* Jeden akcent: kolor zaznaczenia i akcji. --vb-blue-text jest ciemniejszy,
+     bo #0071e3 jako tekst na bieli nie przechodzi AA. */
+  --vb-blue: #0071e3;
+  --vb-blue-press: #0060c0;
+  --vb-blue-text: #0057b3;
+  --vb-blue-tint: #e8f1fd;
+
+  --vb-warn: #9c4d00;
+  --vb-warn-tint: #fdf2e2;
+
+  --vb-light-red: #ff5f57;
+  --vb-light-amber: #febc2e;
+  --vb-light-green: #28c840;
+
+  /* Dwa promienie na cały wariant: okna i grupy 12 px, wiersze i przyciski
+     6 px. Okrągłe są tylko rzeczy z natury okrągłe (kropki traffic lights,
+     gałka przełącznika, znacznik uruchomionej aplikacji w Docku). */
+  --vb-r: 12px;
+  --vb-r-sm: 6px;
+
+  background-color: var(--vb-desktop);
+  color: var(--vb-ink);
+  font-family: var(--vb-font-text), ui-sans-serif, system-ui, sans-serif;
+  font-feature-settings: "cv05" 1; /* Inter: „l” z ogonkiem, bliżej SF Pro. */
+  -webkit-font-smoothing: antialiased;
+}
+
+.vb-display {
+  font-family: var(--vb-font-display), var(--vb-font-text), sans-serif;
+}
+
+.vb-mono {
+  font-family: var(--vb-font-mono), ui-monospace, monospace;
+  font-variant-ligatures: none;
+}
+
+/* Cyfry w tabelach specyfikacji nie mogą skakać przy zmianie wartości. */
+.vb-tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Biurko za oknem: bardzo delikatna poświata, żeby translucencja paska menu
+   i Docka miała co rozmywać. Bez tego vibrancy jest niewidoczne. */
+.vb-wallpaper {
+  background-image:
+    radial-gradient(120% 80% at 22% -10%, rgba(120, 160, 220, 0.28), transparent 62%),
+    radial-gradient(90% 70% at 88% 0%, rgba(196, 180, 226, 0.22), transparent 58%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.65), rgba(255, 255, 255, 0) 46%);
+}
+
+.vb-vibrancy {
+  background-color: var(--vb-titlebar);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  backdrop-filter: saturate(180%) blur(20px);
+}
+
+.vb-vibrancy-sidebar {
+  background-color: var(--vb-sidebar);
+  -webkit-backdrop-filter: saturate(180%) blur(24px);
+  backdrop-filter: saturate(180%) blur(24px);
+}
+
+.vb-vibrancy-dock {
+  background-color: rgba(250, 250, 252, 0.62);
+  -webkit-backdrop-filter: saturate(180%) blur(28px);
+  backdrop-filter: saturate(180%) blur(28px);
+}
+
+/* Cień okna: trzy warstwy, bo prawdziwe okno macOS ma wąski kontakt
+   i szeroką, bardzo miękką poświatę. To nie jest hover-efekt karty. */
+.vb-window-shadow {
+  box-shadow:
+    0 0 0 0.5px var(--vb-line-strong),
+    0 1px 2px rgba(0, 0, 0, 0.06),
+    0 14px 30px -14px rgba(0, 0, 0, 0.26),
+    0 40px 80px -40px rgba(0, 0, 0, 0.3);
+}
+
+/* Grupa wierszy leży na korpusie okna, więc dostaje tylko kontakt. */
+.vb-group-shadow {
+  box-shadow:
+    0 0 0 0.5px var(--vb-line),
+    0 1px 1px rgba(0, 0, 0, 0.03);
+}
+
+/* Separatory w grupie wierszy są wcięte: linia startuje dopiero za ikoną
+   wiodącą, tak jak w Ustawieniach systemowych. Dlatego border siedzi na
+   wewnętrznym elemencie wiersza, a nie na całym <li>. */
+.vb-rows > :not(:first-child) .vb-row-line {
+  border-top: 1px solid var(--vb-line);
+}
+
+/* Podświetlenie zaznaczonego wiersza listy — jak selekcja w Ustawieniach. */
+.vb-selected {
+  background-color: var(--vb-blue);
+  color: #fff;
+  box-shadow: inset 0 0 0 0.5px rgba(0, 0, 0, 0.12);
+}
+
+/* Migający kursor Terminala. */
+.vb-caret {
+  animation: vb-caret 1.06s steps(1, end) infinite;
+}
+
+@keyframes vb-caret {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  50.01%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* Maskotka — kopia sekwencji z globals.css pod własnymi nazwami.
+   Przesunięcia w procentach, bo bohater występuje w trzech rozmiarach
+   (pasek menu, okno nagrania, Dock), a wysokość skoku ma być proporcjonalna.
+   Czasy zgrane z VB_JUMP_MS / VB_SPIN_MS w Mascot.tsx. */
+.vb-jump {
+  animation: vb-jump 600ms ease-in-out;
+}
+
+.vb-spin {
+  animation: vb-spin 420ms ease-in-out;
+}
+
+@keyframes vb-jump {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  18% {
+    transform: translateY(2.3%) scaleY(0.92);
+  }
+  50% {
+    transform: translateY(-10%) scaleY(1.05);
+  }
+  82% {
+    transform: translateY(1.5%) scaleY(0.96);
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes vb-spin {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  18% {
+    transform: translateY(3%) scaleY(0.9);
+  }
+  48% {
+    transform: translateY(-11.4%) scaleY(1.06);
+  }
+  78% {
+    transform: translateY(-3%) scaleY(0.97);
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vb-jump,
+  .vb-spin,
+  .vb-caret {
+    animation: none !important;
+  }
+}

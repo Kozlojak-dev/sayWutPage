@@ -1,0 +1,266 @@
+/* Wariant C — „dark editorial / arkusz specyfikacji".
+   Czysty CSS: bez @import "tailwindcss" (jest już w globals.css).
+
+   Cała paleta i typografia żyją na .vc-root, bo trasa nie może nic dopisać
+   do @theme w globals.css. Wartości bierzemy w JSX przez arbitrary values,
+   np. text-[var(--vc-paper-dim)]. */
+
+.vc-root {
+  /* Atrament: tło strony i głębsza czerń pod nagraniem (kadr musi się odciąć). */
+  --vc-ink: #0b0c0e;
+  --vc-ink-deep: #060709;
+
+  /* Papier: ciepła biel zamiast #fff — na czerni czyta się mniej klinicznie.
+     Kontrast na --vc-ink: paper 18,2:1 · dim 9,1:1 · faint 5,6:1 (AA także
+     dla 11 px etykiet, poniżej faint nie schodzimy). */
+  --vc-paper: #f2f0ea;
+  --vc-paper-dim: #b9b7b0;
+  --vc-paper-faint: #8d8b83;
+
+  /* Hairline'y — jedyny sposób podziału treści w tym wariancie. */
+  --vc-rule: rgba(242, 240, 234, 0.13);
+  --vc-rule-strong: rgba(242, 240, 234, 0.3);
+
+  /* Jedyny kolor akcentu na całej stronie (5,8:1 na --vc-ink).
+     Użyty w trzech miejscach: podkreślenie w h1, ukośnik w numeracji sekcji,
+     wiersz silnika działającego bez klucza API. */
+  --vc-signal: #ff4d17;
+
+  background-color: var(--vc-ink);
+  color: var(--vc-paper);
+  font-family: var(--font-vc-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+.vc-root ::selection {
+  background-color: var(--vc-signal);
+  color: var(--vc-ink);
+}
+
+/* Focus w jednym miejscu, żeby żaden interaktywny element go nie zgubił. */
+.vc-root :focus-visible {
+  outline: 2px solid var(--vc-signal);
+  outline-offset: 3px;
+}
+
+/* MARK: - Siatka */
+
+/* 90rem = 1440 px, czyli dokładnie szerokość źródła nagrania. */
+.vc-container {
+  width: 100%;
+  max-width: 90rem;
+  margin-inline: auto;
+  padding-inline: 1.25rem;
+}
+
+@media (min-width: 40rem) {
+  .vc-container {
+    padding-inline: 2rem;
+  }
+}
+
+@media (min-width: 64rem) {
+  .vc-container {
+    padding-inline: 3rem;
+  }
+}
+
+/* MARK: - Typografia */
+
+.vc-display {
+  font-family: var(--font-vc-display), var(--font-vc-sans), sans-serif;
+}
+
+.vc-mono {
+  font-family: var(--font-vc-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Etykieta danych: wersalik mono w najmniejszym stopniu skali. */
+.vc-label {
+  font-family: var(--font-vc-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  line-height: 1.45;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--vc-paper-faint);
+}
+
+/* Podkreślenie w display: grubość liczona w em, żeby trzymała proporcję
+   przy skoku z 40 px na 152 px. */
+.vc-underline {
+  text-decoration-line: underline;
+  text-decoration-color: var(--vc-signal);
+  text-decoration-thickness: 0.055em;
+  text-underline-offset: 0.08em;
+}
+
+/* Podkreślenie linku odklejone od tekstu — na hairline'ach czyta się
+   spokojniej niż obwódka przycisku. */
+.vc-link {
+  text-decoration-line: underline;
+  text-decoration-color: var(--vc-rule-strong);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.35em;
+  transition: text-decoration-color 150ms ease, color 150ms ease;
+}
+
+.vc-link:hover {
+  color: var(--vc-paper);
+  text-decoration-color: var(--vc-signal);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vc-link {
+    transition: none;
+  }
+}
+
+/* MARK: - Nagranie */
+
+/* Pełna szerokość rodzica — bez 100vw i ujemnych marginesów. Powyżej
+   90rem (szerokość źródła) kadr nie rośnie w nieskończoność: wysokość
+   zostaje 766 px, a object-cover przycina boki. */
+.vc-reel {
+  width: 100%;
+  overflow: hidden;
+  background-color: var(--vc-ink-deep);
+}
+
+.vc-reel-frame {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1440 / 766;
+}
+
+@media (min-width: 90rem) {
+  .vc-reel-frame {
+    aspect-ratio: auto;
+    height: 47.875rem;
+  }
+}
+
+/* MARK: - Tabela silników */
+
+/* Poniżej 48rem pięć kolumn się nie mieści, więc komórki stają się wierszami
+   z etykietami z data-label — zamiast poziomego scrolla bez wskazówki.
+   display: block gubi semantykę tabeli, dlatego JSX dokłada jawne role ARIA. */
+.vc-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.vc-table caption {
+  text-align: left;
+}
+
+.vc-table th,
+.vc-table td {
+  text-align: left;
+  vertical-align: baseline;
+}
+
+.vc-table .vc-engine-default th[scope="row"] {
+  color: var(--vc-signal);
+}
+
+@media (max-width: 47.999rem) {
+  .vc-table thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+
+  .vc-table tbody,
+  .vc-table tr,
+  .vc-table th,
+  .vc-table td {
+    display: block;
+  }
+
+  .vc-table tr {
+    border-top: 1px solid var(--vc-rule-strong);
+    padding-block: 1.375rem 1.75rem;
+  }
+
+  .vc-table td {
+    display: grid;
+    grid-template-columns: 6.5rem 1fr;
+    gap: 0 1rem;
+    padding-top: 0.625rem;
+  }
+
+  .vc-table td::before {
+    content: attr(data-label);
+    font-family: var(--font-vc-mono), ui-monospace, monospace;
+    font-size: 0.625rem;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    line-height: 1.6;
+    text-transform: uppercase;
+    color: var(--vc-paper-faint);
+  }
+}
+
+/* MARK: - Maskotka */
+
+/* Kopie keyframes z globals.css pod prefiksem vc-, bo globals.css jest
+   poza zasięgiem tej trasy. Czasy zgrane z JUMP_MS / SPIN_MS w Mascot.tsx.
+   Przesunięcia w procentach: maskotka występuje w trzech rozmiarach, a %
+   liczy się od wysokości elementu, więc skok zostaje proporcjonalny. */
+
+.vc-hop {
+  animation: vc-hop 600ms ease-in-out;
+}
+
+.vc-turn {
+  animation: vc-turn 420ms ease-in-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .vc-hop,
+  .vc-turn {
+    animation: none !important;
+  }
+}
+
+@keyframes vc-hop {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  18% {
+    transform: translateY(2.3%) scaleY(0.92);
+  }
+  50% {
+    transform: translateY(-10%) scaleY(1.05);
+  }
+  82% {
+    transform: translateY(1.5%) scaleY(0.96);
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}
+
+@keyframes vc-turn {
+  0% {
+    transform: translateY(0) scaleY(1);
+  }
+  18% {
+    transform: translateY(3%) scaleY(0.9);
+  }
+  48% {
+    transform: translateY(-11.4%) scaleY(1.06);
+  }
+  78% {
+    transform: translateY(-3%) scaleY(0.97);
+  }
+  100% {
+    transform: translateY(0) scaleY(1);
+  }
+}

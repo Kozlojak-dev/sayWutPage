@@ -37,8 +37,8 @@ export default function Header() {
             src="/logo.png"
             alt="SayWut"
             width={32}
-            height={32}
-            className="rounded-[8px]"
+            height={34}
+            className="h-[34px] w-8 shrink-0 rounded-[8px]"
             priority
           />
           <span className="text-[15px] font-semibold tracking-tight text-zinc-950">

@@ -1,8 +1,6 @@
 import { FolderOpen, RefreshCw, Settings, TriangleAlert } from "lucide-react";
+import { INSTALL_COMMAND } from "@/lib/constants";
 import TerminalCommand from "./TerminalCommand";
-
-const INSTALL_COMMAND =
-  "curl -fsSL https://raw.githubusercontent.com/Kozlojak-dev/SayWut-Installer/refs/heads/main/install.sh | bash";
 
 const permissionSteps = [
   "Otwórz Ustawienia systemowe",

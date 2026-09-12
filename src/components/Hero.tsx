@@ -2,11 +2,9 @@
 
 import { ExternalLink } from "lucide-react";
 import { useLenis } from "lenis/react";
+import { GITHUB_REPO_URL, INSTALL_COMMAND } from "@/lib/constants";
 import AppPreview from "./AppPreview";
 import TerminalCommand from "./TerminalCommand";
-
-const INSTALL_COMMAND =
-  "curl -fsSL https://raw.githubusercontent.com/Kozlojak-dev/SayWut-Installer/refs/heads/main/install.sh | bash";
 
 export default function Hero() {
   const lenis = useLenis();
@@ -14,10 +12,6 @@ export default function Hero() {
   return (
     <section className="px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-        {/* <span className="mb-6 inline-flex items-center rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium text-zinc-600">
-          macOS 15+ · Apple Silicon
-        </span> */}
-
         <h1 className="text-4xl font-bold tracking-tight text-zinc-950 sm:text-6xl">
           Tłumaczenie ekranu,
           <br className="hidden sm:block" /> na żywo, w jednym panelu
@@ -41,7 +35,7 @@ export default function Hero() {
             Zainstaluj SayWut
           </a>
           <a
-            href="https://github.com/Kozlojak-dev/SayWut-Installer"
+            href={GITHUB_REPO_URL}
             target="_blank"
             rel="noopener noreferrer"
             className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-black/10 px-6 py-3 text-sm font-semibold text-zinc-900 transition-colors hover:bg-black/5 sm:w-auto"
