@@ -4,15 +4,27 @@ import Image from "next/image";
 import { useEffect, useState, useSyncExternalStore } from "react";
 
 /**
- * Scena z pixel-artowym bohaterem SayWut. Świadomie NIE udaje interfejsu
- * aplikacji i niczego nie demonstruje — to maskotka, a nie zrzut ekranu.
- * Prawdziwe materiały z aplikacji trafią tu, gdy będą gotowe.
+ * Hero: nagranie z prawdziwej sesji SayWut plus pixel-artowy bohater przy
+ * krawędzi kafla. Świadomie NIE ma tu dorysowanego interfejsu aplikacji —
+ * to zapis ekranu (fragment 0:26–0:40 oryginalnego nagrania), a nie makieta.
  *
- * Każda poza to osobny plik w public/saywut/*.png, przycięty na identyczne
- * płótno 213×263 z postacią wyrównaną do dolnej krawędzi — dzięki temu
- * podmiana klatki nigdy nie przesuwa bohatera. Ruch odbywa się wyłącznie
+ * Bohater: każda poza to osobny plik w public/saywut/*.png, przycięty na
+ * identyczne płótno 213×263 z postacią wyrównaną do dolnej krawędzi — dzięki
+ * temu podmiana klatki nigdy nie przesuwa postaci. Ruch odbywa się wyłącznie
  * w pionie (translateY/scaleY), nigdy w osi X.
  */
+
+// MARK: - Nagranie
+
+const VIDEO_POSTER = "/demo/hero-poster.jpg";
+/** Wymiary źródła — przeglądarka musi znać proporcje, zanim pobierze plik. */
+const VIDEO_WIDTH = 1440;
+const VIDEO_HEIGHT = 766;
+const VIDEO_DESCRIPTION =
+  "SayWut w działaniu: angielskie napisy w zaznaczonej strefie ekranu i ich " +
+  "polskie tłumaczenie w panelu nakładki.";
+
+// MARK: - Bohater
 
 const FRAMES = [
   "idle-1",
@@ -59,8 +71,9 @@ const SPIN_POSES: Pose[] = [
   { frame: "idle-3", atMs: 300 },
 ];
 
-const JUMP_SHOUT = "hop!";
-const SPIN_SHOUT = "wut?!";
+/** Najazd: na przemian pozdrowienie i namysł. Klik zawsze „wut?!”. */
+const HOVER_SHOUTS = ["hey!", "hm?"] as const;
+const CLICK_SHOUT = "wut?!";
 const SHOUT_VISIBLE_MS = 1100;
 
 const REDUCED_MOTION_QUERY = "(prefers-reduced-motion: reduce)";
@@ -91,10 +104,11 @@ export default function AppPreview() {
   // zanikania. Licznik odświeża czas znikania nawet wtedy, gdy bohater
   // krzyczy to samo dwa razy pod rząd.
   const [shout, setShout] = useState({
-    text: SPIN_SHOUT,
+    text: CLICK_SHOUT,
     id: 0,
     visible: false,
   });
+  const [hoverShoutIndex, setHoverShoutIndex] = useState(0);
 
   useEffect(() => {
     if (reduceMotion || phase !== "idle") return;
@@ -159,14 +173,15 @@ export default function AppPreview() {
 
   const handleHover = () => {
     if (phase !== "idle") return;
-    shoutOut(JUMP_SHOUT);
+    shoutOut(HOVER_SHOUTS[hoverShoutIndex % HOVER_SHOUTS.length]);
+    setHoverShoutIndex((index) => index + 1);
     if (reduceMotion) return;
     setPhase("jumping");
     setPoseId((id) => id + 1);
   };
 
   const handleClick = () => {
-    shoutOut(SPIN_SHOUT);
+    shoutOut(CLICK_SHOUT);
     if (reduceMotion) return;
     setPhase("spinning");
     setPoseId((id) => id + 1);
@@ -176,81 +191,131 @@ export default function AppPreview() {
     phase === "jumping" ? "sw-jump" : phase === "spinning" ? "sw-spin" : "";
 
   return (
-    <figure className="mx-auto w-full max-w-xl">
-      <div className="relative overflow-hidden rounded-3xl border border-black/5 bg-zinc-50">
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(0,0,0,0.07)_1px,transparent_1px)] [background-size:18px_18px]"
-        />
-        <div
-          aria-hidden
-          className="pointer-events-none absolute inset-0 bg-[radial-gradient(60%_55%_at_50%_75%,rgba(255,255,255,0.9)_0%,transparent_100%)]"
-        />
+    <figure className="mx-auto w-full max-w-5xl">
+      {/* Dolny padding robi miejsce na bohatera wychodzącego poza kadr. */}
+      <div className="relative pb-12 sm:pb-16">
+        <div className="relative overflow-hidden rounded-3xl border border-black/5 bg-zinc-950 shadow-sm">
+          {reduceMotion ? (
+            // Zapętlone wideo startujące samo z siebie to dokładnie ten rodzaj
+            // ruchu, którego dotyczy ta preferencja — zostaje sama klatka
+            // z gotowym tłumaczeniem.
+            <Image
+              src={VIDEO_POSTER}
+              alt={VIDEO_DESCRIPTION}
+              width={VIDEO_WIDTH}
+              height={VIDEO_HEIGHT}
+              unoptimized
+              className="h-auto w-full"
+            />
+          ) : (
+            <video
+              autoPlay
+              muted
+              loop
+              playsInline
+              // `metadata` zamiast `auto`: kafel ma się pokazać od razu, a nie
+              // czekać na pobranie całych 2,6 MB.
+              preload="metadata"
+              poster={VIDEO_POSTER}
+              width={VIDEO_WIDTH}
+              height={VIDEO_HEIGHT}
+              aria-label={VIDEO_DESCRIPTION}
+              className="h-auto w-full"
+            >
+              {/* WebM (1,78 MB) przed MP4 (2,60 MB) — przeglądarka bierze
+                  pierwszy obsługiwany format. */}
+              <source src="/demo/hero.webm" type="video/webm" />
+              <source src="/demo/hero.mp4" type="video/mp4" />
+            </video>
+          )}
 
-        <div className="relative flex items-end justify-center px-6 py-10 sm:py-12">
-          <button
-            type="button"
-            onClick={handleClick}
-            onMouseEnter={handleHover}
-            onFocus={handleHover}
-            aria-label="Bohater SayWut — najedź, aby podskoczył, kliknij, aby się obrócił"
-            className="relative rounded-2xl focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/25 focus-visible:ring-offset-4 focus-visible:ring-offset-zinc-50"
+          {/* Etykiety dublują to, co widać na nagraniu — dla czytnika ekranu
+              niosłyby tylko szum, treść jest w podpisie pod kafelkiem.
+              Pozycje w procentach kadru wyliczone z klatek nagrania: panel
+              nakładki zajmuje górne ~19% wysokości, ramka OCR leży
+              między 82% i 97%. */}
+          <div aria-hidden className="hidden sm:block">
+            <div className="absolute left-[3%] top-[20%] flex flex-col items-start">
+              <span className="ml-3 h-4 w-px bg-white/50" />
+              <span className="mt-1 rounded-full border border-white/15 bg-zinc-950/75 px-2.5 py-1 text-[11px] font-medium text-white backdrop-blur-sm">
+                Tłumaczenie na żywo
+              </span>
+            </div>
+
+            <div className="absolute bottom-[19%] left-[14%] flex flex-col items-start">
+              <span className="rounded-full border border-cyan-300/25 bg-zinc-950/75 px-2.5 py-1 text-[11px] font-medium text-cyan-200 backdrop-blur-sm">
+                Odczytywana strefa ekranu
+              </span>
+              <span className="ml-3 h-4 w-px bg-cyan-300/50" />
+            </div>
+          </div>
+        </div>
+
+        {/* Prawa krawędź, nie lewa: ramka OCR sięga do 86% szerokości kadru,
+            a panel z tłumaczeniem stoi w lewym górnym rogu — tutaj bohater
+            nie zasłania żadnego z nich. */}
+        <button
+          type="button"
+          onClick={handleClick}
+          onMouseEnter={handleHover}
+          onFocus={handleHover}
+          aria-label="Bohater SayWut — najedź, aby podskoczył, kliknij, aby się obrócił"
+          className="absolute bottom-0 right-4 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-zinc-900/25 focus-visible:ring-offset-2 focus-visible:ring-offset-white sm:right-8"
+        >
+          <span
+            aria-hidden
+            className={`pointer-events-none absolute -top-2 right-[62%] z-10 whitespace-nowrap rounded-lg border-2 border-zinc-900 bg-white px-2.5 py-1 font-mono text-xs font-bold text-zinc-900 shadow-[3px_3px_0_0_rgba(24,24,27,0.15)] transition duration-200 motion-reduce:transition-none ${
+              shout.visible
+                ? "-translate-y-2 scale-100 opacity-100"
+                : "scale-90 opacity-0"
+            }`}
           >
+            {shout.text}
+            <span className="absolute -bottom-[7px] right-3 h-2.5 w-2.5 rotate-45 border-b-2 border-r-2 border-zinc-900 bg-white" />
+          </span>
+
+          <div className="relative h-[94px] w-[76px] sm:h-[128px] sm:w-[104px]">
             <span
               aria-hidden
-              className={`pointer-events-none absolute -top-2 left-[68%] z-10 whitespace-nowrap rounded-lg border-2 border-zinc-900 bg-white px-2.5 py-1 font-mono text-xs font-bold text-zinc-900 shadow-[3px_3px_0_0_rgba(24,24,27,0.15)] transition duration-200 motion-reduce:transition-none ${
-                shout.visible
-                  ? "-translate-y-2 scale-100 opacity-100"
-                  : "scale-90 opacity-0"
-              }`}
+              className="absolute bottom-0.5 left-1/2 h-2 w-[48%] -translate-x-1/2 rounded-[50%] bg-black/10 blur-[2px]"
+            />
+
+            <div
+              key={poseId}
+              style={{ transformOrigin: "bottom center" }}
+              className={`absolute inset-0 ${poseClass}`}
             >
-              {shout.text}
-              <span className="absolute -bottom-[7px] left-3 h-2.5 w-2.5 rotate-45 border-b-2 border-r-2 border-zinc-900 bg-white" />
-            </span>
-
-            <div className="relative h-[190px] w-[154px] sm:h-[263px] sm:w-[213px]">
-              <span
-                aria-hidden
-                className="absolute bottom-0.5 left-1/2 h-3 w-[52%] -translate-x-1/2 rounded-[50%] bg-black/10 blur-[3px]"
-              />
-
               <div
-                key={poseId}
-                style={{ transformOrigin: "bottom center" }}
-                className={`absolute inset-0 ${poseClass}`}
+                className={`relative h-full w-full ${flipX ? "-scale-x-100" : ""}`}
               >
-                <div
-                  className={`relative h-full w-full ${flipX ? "-scale-x-100" : ""}`}
-                >
-                  {FRAMES.map((name) => (
-                    <Image
-                      key={name}
-                      src={`/saywut/${name}.png`}
-                      alt=""
-                      aria-hidden
-                      width={FRAME_WIDTH}
-                      height={FRAME_HEIGHT}
-                      unoptimized
-                      draggable={false}
-                      // Wszystkie pozy muszą być w pamięci przeglądarki przed
-                      // pierwszym podskokiem, inaczej klatka mignęłaby pusta.
-                      loading="eager"
-                      fetchPriority={name === "idle-1" ? "high" : "low"}
-                      className={`absolute inset-0 h-full w-full select-none object-contain object-bottom [image-rendering:pixelated] ${
-                        frame === name ? "opacity-100" : "opacity-0"
-                      }`}
-                    />
-                  ))}
-                </div>
+                {FRAMES.map((name) => (
+                  <Image
+                    key={name}
+                    src={`/saywut/${name}.png`}
+                    alt=""
+                    aria-hidden
+                    width={FRAME_WIDTH}
+                    height={FRAME_HEIGHT}
+                    unoptimized
+                    draggable={false}
+                    // Wszystkie pozy muszą być w pamięci przeglądarki przed
+                    // pierwszym podskokiem, inaczej klatka mignęłaby pusta.
+                    loading="eager"
+                    fetchPriority={name === "idle-1" ? "high" : "low"}
+                    className={`absolute inset-0 h-full w-full select-none object-contain object-bottom [image-rendering:pixelated] ${
+                      frame === name ? "opacity-100" : "opacity-0"
+                    }`}
+                  />
+                ))}
               </div>
             </div>
-          </button>
-        </div>
+          </div>
+        </button>
       </div>
 
-      <figcaption className="mt-3 text-center text-xs text-zinc-500">
-        Najedź na bohatera albo go kliknij. Zrzuty ekranu aplikacji pojawią się
-        tutaj wkrótce.
+      <figcaption className="text-center text-xs text-zinc-500">
+        Nagranie z aplikacji: angielskie napisy w zaznaczonej strefie, polskie
+        tłumaczenie w panelu obok. Silnik DeepL.
       </figcaption>
     </figure>
   );

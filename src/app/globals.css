@@ -20,7 +20,12 @@ body {
 
 /* AppPreview: bohater SayWut ze sprite'ów w public/saywut. Ruch tylko w osi Y,
    żeby podmiana pozy nigdy nie przesunęła postaci na boki. Czasy animacji są
-   zgrane z sekwencjami klatek w AppPreview.tsx (JUMP_MS, SPIN_MS). */
+   zgrane z sekwencjami klatek w AppPreview.tsx (JUMP_MS, SPIN_MS).
+
+   Przesunięcia w procentach, nie w pikselach: bohater stoi w narożniku kafla
+   w dwóch rozmiarach (94 px i 128 px wysokości), a translateY w % liczy się
+   od wysokości elementu — dzięki temu wysokość skoku jest proporcjonalna
+   w obu przypadkach. */
 
 .sw-jump {
   animation: sw-jump 600ms ease-in-out;
@@ -42,13 +47,13 @@ body {
     transform: translateY(0) scaleY(1);
   }
   18% {
-    transform: translateY(6px) scaleY(0.92);
+    transform: translateY(2.3%) scaleY(0.92);
   }
   50% {
-    transform: translateY(-26px) scaleY(1.05);
+    transform: translateY(-10%) scaleY(1.05);
   }
   82% {
-    transform: translateY(4px) scaleY(0.96);
+    transform: translateY(1.5%) scaleY(0.96);
   }
   100% {
     transform: translateY(0) scaleY(1);
@@ -60,13 +65,13 @@ body {
     transform: translateY(0) scaleY(1);
   }
   18% {
-    transform: translateY(8px) scaleY(0.9);
+    transform: translateY(3%) scaleY(0.9);
   }
   48% {
-    transform: translateY(-30px) scaleY(1.06);
+    transform: translateY(-11.4%) scaleY(1.06);
   }
   78% {
-    transform: translateY(-8px) scaleY(0.97);
+    transform: translateY(-3%) scaleY(0.97);
   }
   100% {
     transform: translateY(0) scaleY(1);

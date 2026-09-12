@@ -2,27 +2,32 @@ const steps = [
   {
     number: "01",
     title: "Zaznacz obszar ekranu",
-    description: "Wybierz fragment ekranu, z którego SayWut ma odczytywać tekst.",
+    description:
+      "Wybierz fragment ekranu, z którego SayWut ma odczytywać tekst.",
   },
   {
     number: "02",
     title: "Ustaw języki",
-    description: "Określ język źródłowy i język, na który ma być tłumaczony tekst.",
+    description:
+      "Określ język źródłowy i język, na który ma być tłumaczony tekst.",
   },
   {
     number: "03",
     title: "Wybierz silnik tłumaczenia",
-    description: "System macOS, DeepL, Gemini lub Apple Intelligence — Ty decydujesz.",
+    description:
+      "System macOS, DeepL, Gemini lub Apple Intelligence — Ty decydujesz.",
   },
   {
     number: "04",
     title: "Uruchom tłumaczenie na żywo",
-    description: "SayWut zaczyna śledzić zaznaczony obszar w czasie rzeczywistym.",
+    description:
+      "SayWut zaczyna śledzić zaznaczony obszar w czasie rzeczywistym.",
   },
   {
     number: "05",
     title: "Odbierz wynik w panelu",
-    description: "Tłumaczenie pojawia się w lekkim, przezroczystym panelu na ekranie.",
+    description:
+      "Tłumaczenie pojawia się w lekkim, przezroczystym panelu na ekranie.",
   },
 ];
 
@@ -42,10 +47,7 @@ export default function HowItWorks() {
 
         <ol className="mt-16 grid grid-cols-1 gap-px overflow-hidden rounded-2xl border border-black/5 bg-black/5 sm:grid-cols-5">
           {steps.map((step) => (
-            <li
-              key={step.number}
-              className="flex flex-col gap-3 bg-white p-6"
-            >
+            <li key={step.number} className="flex flex-col gap-3 bg-white p-6">
               <span className="font-mono text-sm font-medium text-zinc-400">
                 {step.number}
               </span>

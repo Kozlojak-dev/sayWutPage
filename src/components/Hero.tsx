@@ -14,9 +14,9 @@ export default function Hero() {
   return (
     <section className="px-6 pt-20 pb-24 sm:pt-28 sm:pb-32">
       <div className="mx-auto flex max-w-3xl flex-col items-center text-center">
-        <span className="mb-6 inline-flex items-center rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium text-zinc-600">
+        {/* <span className="mb-6 inline-flex items-center rounded-full border border-black/10 bg-white px-4 py-1 text-xs font-medium text-zinc-600">
           macOS 15+ · Apple Silicon
-        </span>
+        </span> */}
 
         <h1 className="text-4xl font-bold tracking-tight text-zinc-950 sm:text-6xl">
           Tłumaczenie ekranu,
@@ -54,7 +54,9 @@ export default function Hero() {
         <TerminalCommand command={INSTALL_COMMAND} className="mt-8 w-full max-w-xl" />
       </div>
 
-      <div className="mx-auto mt-16 max-w-3xl">
+      {/* Szerzej niż kolumna tekstu (max-w-3xl): przy ~1024 px tekst w panelu
+          tłumaczenia na nagraniu jest czytelny, przy 768 px już nie. */}
+      <div className="mx-auto mt-16 max-w-5xl">
         <AppPreview />
       </div>
     </section>
