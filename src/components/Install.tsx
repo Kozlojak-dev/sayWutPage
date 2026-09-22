@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { FolderOpen, RefreshCw, TriangleAlert } from "lucide-react";
+import { RefreshCw, TriangleAlert } from "lucide-react";
 import { INSTALL_COMMAND } from "@/lib/constants";
 import {
   Footnote,
@@ -35,6 +35,8 @@ export default function Install() {
       <PaneHeading
         id="instalacja-title"
         title="Instalacja"
+        className="max-w-none"
+        leadClassName="lg:whitespace-nowrap"
         lead="Otwórz Terminal, wklej komendę i naciśnij Enter. Instalator pobierze najnowszą wersję i uruchomi SayWut."
       />
 
@@ -54,11 +56,13 @@ export default function Install() {
           }
         >
           <div className="px-4 py-3.5">
-            <p className="vb-mono text-[12px] text-white/35">
+            {/* <p className="vb-mono text-[12px] text-white/35">
               Ostatnie logowanie: sesja lokalna
-            </p>
+            </p> */}
             <p className="vb-mono mt-2 text-[13px] leading-[1.7] text-white/90 [overflow-wrap:anywhere] whitespace-pre-wrap">
-              <span className="select-none text-[var(--vb-light-green)]">~</span>
+              <span className="select-none text-[var(--vb-light-green)]">
+                ~
+              </span>
               <span className="select-none text-white/40"> % </span>
               {INSTALL_COMMAND}
               <span
@@ -92,16 +96,10 @@ export default function Install() {
             title="Ostrzeżenie macOS przy pierwszym uruchomieniu"
             detail={
               <>
-                SayWut jest dystrybuowany poza App Store. Jeśli system zablokuje
-                start, otwórz Finder → Aplikacje, kliknij prawym przyciskiem
-                SayWut.app, wybierz „Otwórz” i potwierdź.
+                SayWut jest dystrybuowany poza App Store. Jeśli macOS zablokuje
+                aplikację, wejdź w Finder → Aplikacje, kliknij SayWut prawym
+                przyciskiem myszy i wymuś start, wybierając „Otwórz”.
               </>
-            }
-            trailing={
-              <span className="flex items-center gap-1">
-                <FolderOpen aria-hidden className="h-3.5 w-3.5" />
-                Finder
-              </span>
             }
           />
           <Row
@@ -112,7 +110,6 @@ export default function Install() {
             }
             title="Aktualizacja"
             detail="Uruchom tę samą komendę jeszcze raz — nowa wersja zastąpi poprzednią."
-            trailing="ta sama komenda"
           />
         </Rows>
       </Group>

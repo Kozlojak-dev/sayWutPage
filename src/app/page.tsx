@@ -1,25 +1,32 @@
-import Engines from "@/components/Engines";
-import Features from "@/components/Features";
-import Footer from "@/components/Footer";
-import Header from "@/components/Header";
+import EnginesPane from "@/components/EnginesPane";
+import Foot from "@/components/Foot";
 import Hero from "@/components/Hero";
-import HowItWorks from "@/components/HowItWorks";
-import Installation from "@/components/Installation";
-import Requirements from "@/components/Requirements";
+import HowItWorksPane from "@/components/HowItWorksPane";
+import Install from "@/components/Install";
+import MenuBar from "@/components/MenuBar";
+import PanelPane from "@/components/PanelPane";
+import PrivacyPane from "@/components/PrivacyPane";
+import SettingsShell from "@/components/SettingsShell";
 
 export default function Home() {
   return (
-    <div className="flex min-h-full flex-1 flex-col bg-white">
-      <Header />
+    <div className="flex min-h-screen flex-1 flex-col">
+      <MenuBar />
+
       <main className="flex-1">
         <Hero />
-        <HowItWorks />
-        <Features />
-        <Engines />
-        <Requirements />
-        <Installation />
+
+        <SettingsShell>
+          <HowItWorksPane />
+          <PanelPane />
+          <EnginesPane />
+          <PrivacyPane />
+        </SettingsShell>
+
+        <Install />
       </main>
-      <Footer />
+
+      <Foot />
     </div>
   );
 }

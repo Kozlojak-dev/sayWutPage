@@ -5,14 +5,10 @@ import { useEffect, useState } from "react";
 import { usePrefersReducedMotion } from "./use-reduced-motion";
 
 /**
- * Bohater SayWut w trzech miejscach wariantu: jako ikona dodatkowa w pasku
- * menu, na dolnej krawędzi okna z nagraniem i jako uruchomiona aplikacja
- * w Docku. Każda poza to osobny plik w public/saywut/*.png na identycznym
- * płótnie 213×263 z postacią wyrównaną do dolnej krawędzi, więc podmiana
- * klatki nigdy nie przesuwa postaci. Ruch wyłącznie w osi Y.
- *
- * Logika sekwencji pochodzi z src/components/AppPreview.tsx; różnice to
- * konfigurowalny rozmiar, strona dymka i klasy animacji z prefiksem vb-.
+ * Bohater SayWut w dwóch miejscach: jako ikona dodatkowa w pasku menu
+ * i obok nagłówka w hero. Każda poza to osobny plik w public/saywut/*.png
+ * na identycznym płótnie 213×263 z postacią wyrównaną do dolnej krawędzi,
+ * więc podmiana klatki nigdy nie przesuwa postaci. Ruch wyłącznie w osi Y.
  */
 
 const FRAMES = [
@@ -66,6 +62,7 @@ export default function Mascot({
   label,
   className,
   bubble = "above",
+  bubbleSize = "menu",
   bubbleClassName = "",
   hoverShouts = ["hey!", "hm?"],
   clickShout = "wut?!",
@@ -77,6 +74,8 @@ export default function Mascot({
   /** Rozmiar boksu; proporcje klatki to 213×263. */
   className: string;
   bubble?: "above" | "below" | "none";
+  /** menu: etykieta Docka przy ikonie 22 px. hero: podpowiedź przy postaci 260 px. */
+  bubbleSize?: "menu" | "hero";
   bubbleClassName?: string;
   hoverShouts?: readonly string[];
   clickShout?: string;
@@ -170,6 +169,9 @@ export default function Mascot({
   const poseClass =
     phase === "jumping" ? "vb-jump" : phase === "spinning" ? "vb-spin" : "";
 
+  const heroBubble = bubbleSize === "hero";
+  const hideShift = bubble === "above" ? "translate-y-1" : "-translate-y-1";
+
   return (
     <button
       type="button"
@@ -182,17 +184,31 @@ export default function Mascot({
       {bubble === "none" ? null : (
         // Dymek udaje podpowiedź systemową (jak tooltip w Docku), a nie
         // komiksową chmurkę — to ten sam język wizualny co reszta strony.
+        // Hero dostaje większy panel wycentrowany nad głową; MenuBar
+        // zostaje przy 11 px i kotwiczy się przez bubbleClassName.
         <span
           aria-hidden
-          className={`pointer-events-none absolute z-20 whitespace-nowrap rounded-[var(--vb-r-sm)] bg-[var(--vb-panel)] px-2 py-1 text-[11px] font-medium text-[var(--vb-ink)] shadow-[0_0_0_0.5px_var(--vb-line-strong),0_6px_16px_-8px_rgba(0,0,0,0.45)] transition duration-200 motion-reduce:transition-none ${
+          className={`pointer-events-none absolute z-20 whitespace-nowrap bg-[var(--vb-panel)] font-medium text-[var(--vb-ink)] transition duration-200 motion-reduce:transition-none ${
+            heroBubble
+              ? "left-1/2 mb-2 rounded-[var(--vb-r)] px-3 py-1.5 text-[14px] shadow-[0_0_0_0.5px_var(--vb-line-strong),0_1px_2px_rgba(0,0,0,0.06),0_10px_24px_-10px_rgba(0,0,0,0.24)]"
+              : "rounded-[var(--vb-r-sm)] px-2 py-1 text-[11px] shadow-[0_0_0_0.5px_var(--vb-line-strong),0_6px_16px_-8px_rgba(0,0,0,0.45)]"
+          } ${
             bubble === "above" ? "bottom-full mb-1.5" : "top-full mt-1.5"
           } ${bubbleClassName} ${
             shout.visible
-              ? "translate-y-0 scale-100 opacity-100"
-              : `${bubble === "above" ? "translate-y-1" : "-translate-y-1"} scale-95 opacity-0`
+              ? `${heroBubble ? "-translate-x-1/2 " : ""}translate-y-0 scale-100 opacity-100`
+              : `${heroBubble ? "-translate-x-1/2 " : ""}${hideShift} scale-95 opacity-0`
           }`}
         >
           <span className="vb-mono">{shout.text}</span>
+          {heroBubble && bubble === "above" ? (
+            <span
+              aria-hidden
+              className="absolute top-full left-1/2 h-1.5 w-3 -translate-x-1/2 overflow-hidden"
+            >
+              <span className="absolute top-0 left-1/2 h-1.5 w-1.5 -translate-x-1/2 -translate-y-[45%] rotate-45 bg-[var(--vb-panel)] shadow-[0_0_0_0.5px_var(--vb-line-strong)]" />
+            </span>
+          ) : null}
         </span>
       )}
 

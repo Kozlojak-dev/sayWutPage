@@ -27,8 +27,8 @@ const ENGINES: Engine[] = [
   },
   {
     name: "DeepL",
-    note: "Wysoka jakość przekładu. Darmowy klucz obejmuje milion znaków miesięcznie.",
-    status: "Klucz · 1 mln znaków/mies.",
+    note: "Wysoka jakość tłumaczenia. Darmowy klucz obejmuje milion znaków per konto",
+    status: "Klucz · 1 mln znaków/konto",
     icon: Languages,
   },
   {

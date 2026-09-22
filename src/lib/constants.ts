@@ -1,5 +1,4 @@
-/** Wspólne stałe strony — używane przez komponenty na stronie głównej
- *  i przez warianty designu w src/app/warianty/*. */
+/** Wspólne stałe strony. */
 
 /** Komenda instalacyjna wklejana do Terminala. */
 export const INSTALL_COMMAND =

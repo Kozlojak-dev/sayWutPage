@@ -8,7 +8,6 @@ import {
   RowIcon,
   Rows,
   StateSwitch,
-  SystemPath,
 } from "./ui";
 
 export default function PrivacyPane() {
@@ -18,14 +17,6 @@ export default function PrivacyPane() {
       aria-labelledby="prywatnosc-title"
       className="scroll-mt-16 px-5 pt-3 pb-11 sm:px-8"
     >
-      <SystemPath
-        steps={[
-          "Ustawienia systemowe",
-          "Prywatność i bezpieczeństwo",
-          "Nagrywanie ekranu",
-        ]}
-      />
-
       <div className="mt-4">
         <PaneHeading
           id="prywatnosc-title"
@@ -53,7 +44,7 @@ export default function PrivacyPane() {
                 <Cpu className="h-3.5 w-3.5" strokeWidth={2} />
               </RowIcon>
             }
-            title="Apple Silicon M1 / M2 / M3 / M4"
+            title="Układy Apple Silicon serii M"
           />
         </Rows>
       </Group>
@@ -72,7 +63,10 @@ export default function PrivacyPane() {
             title="SayWut"
             detail="Aplikacja może rejestrować zawartość ekranu, żeby rozpoznać tekst lokalnie."
             trailing={
-              <StateSwitch on stateLabel="Uprawnienie Nagrywanie ekranu jest włączone" />
+              <StateSwitch
+                on
+                stateLabel="Uprawnienie Nagrywanie ekranu jest włączone"
+              />
             }
           />
         </Rows>

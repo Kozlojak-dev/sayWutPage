@@ -1,18 +1,15 @@
 import { Keyboard, Lock, Move, RotateCcw, Type } from "lucide-react";
 import {
-  Footnote,
   Group,
   GroupLabel,
   PaneHeading,
   Row,
   RowIcon,
   Rows,
-  StateSwitch,
 } from "./ui";
 
 /**
- * Możliwości panelu jako wiersze preferencji — nie cztery kafle. Wartości
- * po prawej udają stan systemu (jak w Ustawieniach), nie przyciski.
+ * Możliwości panelu jako wiersze preferencji — nie cztery kafle.
  */
 export default function PanelPane() {
   return (
@@ -40,7 +37,6 @@ export default function PanelPane() {
             }
             title="Przesuwanie i zmiana rozmiaru"
             detail="W trybie edycji przeciągnij panel w dowolne miejsce i dopasuj jego wymiary do tłumaczonego tekstu."
-            trailing="Włączony"
           />
           <Row
             icon={
@@ -50,18 +46,6 @@ export default function PanelPane() {
             }
             title="Wielkość tekstu"
             detail="Dopasuj rozmiar tekstu w panelu do swoich potrzeb, żeby czytać wygodnie — bez względu na to, jak daleko siedzisz od ekranu."
-            trailing={
-              <span
-                aria-hidden
-                className="flex items-end gap-1 text-[var(--vb-ink-3)]"
-              >
-                <span className="text-[11px] leading-none">A</span>
-                <span className="text-[13px] leading-none">A</span>
-                <span className="text-[16px] leading-none text-[var(--vb-ink)]">
-                  A
-                </span>
-              </span>
-            }
           />
           <Row
             icon={
@@ -71,7 +55,6 @@ export default function PanelPane() {
             }
             title="Reset pozycji"
             detail="Jeśli panel znajdzie się poza ekranem, jedno kliknięcie przywróci go na domyślne miejsce."
-            trailing="Przywróć"
           />
         </Rows>
       </Group>
@@ -89,11 +72,6 @@ export default function PanelPane() {
             }
             title="Pauza pod skrótem"
             detail="Tłumaczenie zatrzymasz i wznowisz przyciskiem albo własnym skrótem klawiszowym, bez wracania do ustawień."
-            trailing={
-              <kbd className="vb-mono rounded-[var(--vb-r-sm)] bg-[var(--vb-panel-sunken)] px-1.5 py-0.5 text-[11px] shadow-[inset_0_0_0_0.5px_var(--vb-line)]">
-                skrót
-              </kbd>
-            }
           />
           <Row
             icon={
@@ -103,16 +81,9 @@ export default function PanelPane() {
             }
             title="Blokada po edycji"
             detail="Po zakończeniu ustawiania panel nie przesunie się przypadkiem, kiedy pracujesz pod nim myszą."
-            trailing={
-              <StateSwitch on stateLabel="Blokada panelu jest włączona" />
-            }
           />
         </Rows>
       </Group>
-
-      {/* <Footnote className="mt-3 ml-1">
-        Skrót pauzy ustawiasz w aplikacji — tu widać tylko, że jest dostępny.
-      </Footnote> */}
     </section>
   );
 }

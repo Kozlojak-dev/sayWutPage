@@ -1,9 +1,8 @@
-/* Wariant B — „macOS System Settings”.
+/* SayWut — „macOS System Settings”.
 
-   Cały wariant żyje pod .vb-root, więc paleta jest zdefiniowana jako custom
-   properties na wrapperze trasy, a nie w @theme. Reszta arkusza to wyłącznie
-   rzeczy, których nie da się zapisać jako klasa Tailwinda: krzywe animacji,
-   vibrancy i cienie okien.
+   Paleta żyje jako custom properties na .vb-root. Reszta arkusza to
+   rzeczy, których nie da się zapisać jako klasa Tailwinda: krzywe
+   animacji, vibrancy i cienie okien.
 
    Tailwind NIE jest tu importowany — robi to już src/app/globals.css. */
 
@@ -42,9 +41,9 @@
   --vb-light-amber: #febc2e;
   --vb-light-green: #28c840;
 
-  /* Dwa promienie na cały wariant: okna i grupy 12 px, wiersze i przyciski
+  /* Dwa promienie na cały interfejs: okna i grupy 12 px, wiersze i przyciski
      6 px. Okrągłe są tylko rzeczy z natury okrągłe (kropki traffic lights,
-     gałka przełącznika, znacznik uruchomionej aplikacji w Docku). */
+     gałka przełącznika). */
   --vb-r: 12px;
   --vb-r-sm: 6px;
 
@@ -70,7 +69,7 @@
 }
 
 /* Biurko za oknem: bardzo delikatna poświata, żeby translucencja paska menu
-   i Docka miała co rozmywać. Bez tego vibrancy jest niewidoczne. */
+   miała co rozmywać. Bez tego vibrancy jest niewidoczne. */
 .vb-wallpaper {
   background-image:
     radial-gradient(120% 80% at 22% -10%, rgba(120, 160, 220, 0.28), transparent 62%),
@@ -88,12 +87,6 @@
   background-color: var(--vb-sidebar);
   -webkit-backdrop-filter: saturate(180%) blur(24px);
   backdrop-filter: saturate(180%) blur(24px);
-}
-
-.vb-vibrancy-dock {
-  background-color: rgba(250, 250, 252, 0.62);
-  -webkit-backdrop-filter: saturate(180%) blur(28px);
-  backdrop-filter: saturate(180%) blur(28px);
 }
 
 /* Cień okna: trzy warstwy, bo prawdziwe okno macOS ma wąski kontakt
@@ -143,9 +136,8 @@
   }
 }
 
-/* Maskotka — kopia sekwencji z globals.css pod własnymi nazwami.
-   Przesunięcia w procentach, bo bohater występuje w trzech rozmiarach
-   (pasek menu, okno nagrania, Dock), a wysokość skoku ma być proporcjonalna.
+/* Maskotka. Przesunięcia w procentach, bo bohater występuje w różnych
+   rozmiarach, a wysokość skoku ma być proporcjonalna.
    Czasy zgrane z VB_JUMP_MS / VB_SPIN_MS w Mascot.tsx. */
 .vb-jump {
   animation: vb-jump 600ms ease-in-out;

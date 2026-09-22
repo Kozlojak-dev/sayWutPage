@@ -26,7 +26,7 @@ const STEPS = [
   {
     title: "Odbierz wynik w panelu",
     description:
-      "Tłumaczenie pojawia się w lekkim, przezroczystym panelu obok źródła.",
+      "Tłumaczenie pojawia się w półprzezroczystym panelu obok źródła.",
   },
 ] as const;
 

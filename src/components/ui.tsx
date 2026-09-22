@@ -1,7 +1,7 @@
 import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 
-/* Prezentacyjne prymitywy wariantu B. Żaden z nich nie przyjmuje handlerów,
+/* Prezentacyjne prymitywy interfejsu. Żaden z nich nie przyjmuje handlerów,
    więc plik zostaje po stronie serwera — interaktywne kontrolki (przełącznik,
    segmented control, lista wyboru) mieszkają w panelach, które ich używają. */
 
@@ -64,7 +64,7 @@ export function WindowFrame({
       >
         <TrafficLights />
         <p
-          className={`pointer-events-none absolute inset-x-14 text-center text-[13px] font-medium ${
+          className={`pointer-events-none absolute inset-x-14 truncate text-center text-[13px] font-medium ${
             dark ? "text-white/55" : "text-[var(--vb-ink-2)]"
           }`}
         >
@@ -140,12 +140,12 @@ export function Row({
 }) {
   return (
     <li
-      className={`flex items-stretch pl-3.5 ${selected ? "vb-selected" : ""} ${className}`}
+      className={`flex items-center pl-3.5 ${selected ? "vb-selected" : ""} ${className}`}
     >
       {icon ? (
-        <span className="flex shrink-0 items-start pt-[13px] pr-3">{icon}</span>
+        <span className="flex shrink-0 items-center pr-3">{icon}</span>
       ) : null}
-      <div className="vb-row-line flex min-w-0 flex-1 items-center gap-4 py-2.5 pr-3.5">
+      <div className="vb-row-line flex min-w-0 flex-1 flex-col gap-1.5 py-2.5 pr-3.5 sm:flex-row sm:items-center sm:gap-4">
         <div className="min-w-0 flex-1">
           <p
             className={`text-[13px] font-medium ${
@@ -263,13 +263,17 @@ export function PaneHeading({
   id,
   title,
   lead,
+  className = "max-w-[62ch]",
+  leadClassName = "",
 }: {
   id: string;
   title: string;
   lead?: ReactNode;
+  className?: string;
+  leadClassName?: string;
 }) {
   return (
-    <div className="max-w-[62ch]">
+    <div className={className}>
       <h2
         id={id}
         className="vb-display text-[21px] font-semibold tracking-[-0.015em] text-[var(--vb-ink)]"
@@ -277,7 +281,9 @@ export function PaneHeading({
         {title}
       </h2>
       {lead ? (
-        <p className="mt-1.5 text-[15px] leading-[1.5] text-[var(--vb-ink-2)]">
+        <p
+          className={`mt-1.5 text-[15px] leading-[1.5] text-[var(--vb-ink-2)] ${leadClassName}`}
+        >
           {lead}
         </p>
       ) : null}
