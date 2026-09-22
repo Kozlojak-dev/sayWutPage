@@ -56,9 +56,6 @@ export default function Install() {
           }
         >
           <div className="px-4 py-3.5">
-            {/* <p className="vb-mono text-[12px] text-white/35">
-              Ostatnie logowanie: sesja lokalna
-            </p> */}
             <p className="vb-mono mt-2 text-[13px] leading-[1.7] text-white/90 [overflow-wrap:anywhere] whitespace-pre-wrap">
               <span className="select-none text-[var(--vb-light-green)]">
                 ~

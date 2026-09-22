@@ -1,9 +1,7 @@
-import { ChevronRight } from "lucide-react";
 import type { ReactNode } from "react";
 
 /* Prezentacyjne prymitywy interfejsu. Żaden z nich nie przyjmuje handlerów,
-   więc plik zostaje po stronie serwera — interaktywne kontrolki (przełącznik,
-   segmented control, lista wyboru) mieszkają w panelach, które ich używają. */
+   więc plik zostaje po stronie serwera. */
 
 // MARK: - Okno
 
@@ -37,14 +35,12 @@ export function WindowFrame({
   tone = "light",
   titleTrailing,
   bodyClassName = "",
-  className = "",
   children,
 }: {
   title: string;
   tone?: "light" | "dark";
   titleTrailing?: ReactNode;
   bodyClassName?: string;
-  className?: string;
   children: ReactNode;
 }) {
   const dark = tone === "dark";
@@ -53,7 +49,7 @@ export function WindowFrame({
     <div
       className={`vb-window-shadow rounded-[var(--vb-r)] ${
         dark ? "bg-[#1d1d20]" : "bg-[var(--vb-window)]"
-      } ${className}`}
+      }`}
     >
       <div
         className={`relative flex h-[38px] items-center gap-3 rounded-t-[var(--vb-r)] px-3.5 ${
@@ -106,16 +102,14 @@ export function Group({
 
 export function Rows({
   ordered = false,
-  className = "",
   children,
 }: {
   ordered?: boolean;
-  className?: string;
   children: ReactNode;
 }) {
   const List = ordered ? "ol" : "ul";
 
-  return <List className={`vb-rows ${className}`}>{children}</List>;
+  return <List className="vb-rows">{children}</List>;
 }
 
 /**
@@ -128,7 +122,6 @@ export function Row({
   detail,
   trailing,
   selected = false,
-  className = "",
 }: {
   icon?: ReactNode;
   title: ReactNode;
@@ -136,11 +129,10 @@ export function Row({
   trailing?: ReactNode;
   /** Zaznaczenie listy wyboru — tło systemowego błękitu, jasny tekst. */
   selected?: boolean;
-  className?: string;
 }) {
   return (
     <li
-      className={`flex items-center pl-3.5 ${selected ? "vb-selected" : ""} ${className}`}
+      className={`flex items-center pl-3.5 ${selected ? "vb-selected" : ""}`}
     >
       {icon ? (
         <span className="flex shrink-0 items-center pr-3">{icon}</span>
@@ -234,27 +226,6 @@ export function StateSwitch({
         />
       </span>
     </span>
-  );
-}
-
-/** Ścieżka klikania w systemie: „Ustawienia → Prywatność → …”. */
-export function SystemPath({ steps }: { steps: string[] }) {
-  return (
-    <p className="flex flex-wrap items-center gap-x-1.5 gap-y-1.5 text-[12px] text-[var(--vb-ink-2)]">
-      {steps.map((step, index) => (
-        <span key={step} className="flex items-center gap-1.5">
-          {index > 0 ? (
-            <ChevronRight
-              aria-hidden
-              className="h-3 w-3 text-[var(--vb-ink-3)]"
-            />
-          ) : null}
-          <span className="rounded-[var(--vb-r-sm)] bg-[var(--vb-panel-sunken)] px-1.5 py-0.5 shadow-[inset_0_0_0_0.5px_var(--vb-line)]">
-            {step}
-          </span>
-        </span>
-      ))}
-    </p>
   );
 }
 

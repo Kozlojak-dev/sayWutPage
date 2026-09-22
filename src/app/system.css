@@ -12,7 +12,6 @@
      w prawym panelu. Trzy poziomy jasności zamiast jednej bieli. */
   --vb-desktop: #e4e4e9;
   --vb-window: #f1f1f3;
-  --vb-sidebar: rgba(247, 247, 249, 0.72);
   --vb-panel: #ffffff;
   --vb-panel-sunken: #f4f4f6;
   --vb-titlebar: rgba(238, 238, 241, 0.78);
@@ -32,8 +31,6 @@
   --vb-blue: #0071e3;
   --vb-blue-press: #0060c0;
   --vb-blue-text: #0057b3;
-  --vb-blue-tint: #e8f1fd;
-
   --vb-warn: #9c4d00;
   --vb-warn-tint: #fdf2e2;
 
@@ -81,12 +78,6 @@
   background-color: var(--vb-titlebar);
   -webkit-backdrop-filter: saturate(180%) blur(20px);
   backdrop-filter: saturate(180%) blur(20px);
-}
-
-.vb-vibrancy-sidebar {
-  background-color: var(--vb-sidebar);
-  -webkit-backdrop-filter: saturate(180%) blur(24px);
-  backdrop-filter: saturate(180%) blur(24px);
 }
 
 /* Cień okna: trzy warstwy, bo prawdziwe okno macOS ma wąski kontakt
@@ -138,7 +129,7 @@
 
 /* Maskotka. Przesunięcia w procentach, bo bohater występuje w różnych
    rozmiarach, a wysokość skoku ma być proporcjonalna.
-   Czasy zgrane z VB_JUMP_MS / VB_SPIN_MS w Mascot.tsx. */
+   Czasy zgrane z JUMP_MS / SPIN_MS w Mascot.tsx. */
 .vb-jump {
   animation: vb-jump 600ms ease-in-out;
 }

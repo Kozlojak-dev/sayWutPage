@@ -63,7 +63,6 @@ export default function Mascot({
   className,
   bubble = "above",
   bubbleSize = "menu",
-  bubbleClassName = "",
   hoverShouts = ["hey!", "hm?"],
   clickShout = "wut?!",
   shadow = false,
@@ -76,7 +75,6 @@ export default function Mascot({
   bubble?: "above" | "below" | "none";
   /** menu: etykieta Docka przy ikonie 22 px. hero: podpowiedź przy postaci 260 px. */
   bubbleSize?: "menu" | "hero";
-  bubbleClassName?: string;
   hoverShouts?: readonly string[];
   clickShout?: string;
   shadow?: boolean;
@@ -184,8 +182,7 @@ export default function Mascot({
       {bubble === "none" ? null : (
         // Dymek udaje podpowiedź systemową (jak tooltip w Docku), a nie
         // komiksową chmurkę — to ten sam język wizualny co reszta strony.
-        // Hero dostaje większy panel wycentrowany nad głową; MenuBar
-        // zostaje przy 11 px i kotwiczy się przez bubbleClassName.
+        // Hero dostaje większy panel wycentrowany nad głową.
         <span
           aria-hidden
           className={`pointer-events-none absolute z-20 whitespace-nowrap bg-[var(--vb-panel)] font-medium text-[var(--vb-ink)] transition duration-200 motion-reduce:transition-none ${
@@ -194,7 +191,7 @@ export default function Mascot({
               : "rounded-[var(--vb-r-sm)] px-2 py-1 text-[11px] shadow-[0_0_0_0.5px_var(--vb-line-strong),0_6px_16px_-8px_rgba(0,0,0,0.45)]"
           } ${
             bubble === "above" ? "bottom-full mb-1.5" : "top-full mt-1.5"
-          } ${bubbleClassName} ${
+          } ${
             shout.visible
               ? `${heroBubble ? "-translate-x-1/2 " : ""}translate-y-0 scale-100 opacity-100`
               : `${heroBubble ? "-translate-x-1/2 " : ""}${hideShift} scale-95 opacity-0`
