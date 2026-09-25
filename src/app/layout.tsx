@@ -31,7 +31,7 @@ const plexMono = IBM_Plex_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "SayWut — tłumaczenie ekranu na żywo dla macOS",
+  title: "SayWut — tłumaczenie ekranu na żywo",
   description:
     "SayWut rozpoznaje tekst z wybranego fragmentu ekranu, tłumaczy go w czasie rzeczywistym i wyświetla wynik w lekkim, przezroczystym panelu.",
 };
